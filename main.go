@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,8 @@ func main(){
 	router.GET("/books/:id/:title/:author", bookHandler)
 
 	router.GET("/query", queryHandler)
+
+	router.POST("/books", postBooksHandler)
 
 	//--root url yang kurang disarankan--
 
@@ -73,4 +76,23 @@ func queryHandler(c *gin.Context){
 	description := c.Query("description")
 
 	c.JSON(http.StatusOK, gin.H{"title":title, "description":description})
+}
+
+type BookInput struct {
+	Title string
+	Price int64
+}
+
+func postBooksHandler(c *gin.Context){
+	var bookInput BookInput
+
+	err := c.ShouldBindJSON(&bookInput)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"title": bookInput.Title,
+		"price": bookInput.Price,
+	})
 }
