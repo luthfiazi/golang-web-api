@@ -11,7 +11,7 @@ import (
 func main(){
 	router :=gin.Default()
 
-	//versioning API
+	//versioning API V1
 	v1 := router.Group("v1")
 
 	//membuat root url yang disarankan
@@ -24,6 +24,20 @@ func main(){
 	v1.GET("/query", queryHandler)
 
 	v1.POST("/books", postBooksHandler)
+
+	//versioning API V1
+	v2 := router.Group("v2")
+
+	//membuat root url yang disarankan
+	v2.GET("/", rootHandler)  
+
+	v2.GET("/artikel", rootArtikel)
+
+	v2.GET("/books/:id/:title/:author", bookHandler)
+
+	v2.GET("/query", queryHandler)
+
+	v2.POST("/books", postBooksHandler)
 
 	//--root url yang kurang disarankan--
 
