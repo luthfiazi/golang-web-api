@@ -1,12 +1,27 @@
 package main
 
 import (
+	// "fmt"
+	"golang-web-api/book"
+	"golang-web-api/handler"
+	"log"
 
 	"github.com/gin-gonic/gin"
-	"golang-web-api/handler"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main(){
+	dsn := "root:@tcp(127.0.0.1:3306)/golang_web?charset=utf8mb4&parseTime=True&loc=Local"
+  	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err !=nil {
+		log.Fatal("DB connection error")
+	}
+	
+	db.AutoMigrate(&book.Book{})
+	// fmt.Println("Database Connected")
+
 	router :=gin.Default()
 
 	//cara membuat versioning API V1
