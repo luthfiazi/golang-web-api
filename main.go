@@ -2,6 +2,7 @@ package main
 
 import (
 	// "fmt"
+	"fmt"
 	"golang-web-api/book"
 	"golang-web-api/handler"
 	"log"
@@ -18,9 +19,25 @@ func main(){
 	if err !=nil {
 		log.Fatal("DB connection error")
 	}
-	
+
 	db.AutoMigrate(&book.Book{})
 	// fmt.Println("Database Connected")
+
+	//CRUD
+	//Create data
+	book := book.Book{}
+	book.Title = "Belajar Golang Lanjut"
+	book.Description = "Go Super"
+	book.Price = 100000
+	book.Discount = 50
+	book.Rating = 5
+
+	err = db.Create(&book).Error
+	if err !=nil {
+		fmt.Println("============");
+		fmt.Println("Error Creating Data");
+		fmt.Println("============");
+	}
 
 	router :=gin.Default()
 
