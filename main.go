@@ -14,6 +14,7 @@ import (
 )
 
 func main(){
+	//connection database Mysql
 	dsn := "root:@tcp(127.0.0.1:3306)/golang_web?charset=utf8mb4&parseTime=True&loc=Local"
   	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err !=nil {
@@ -25,19 +26,31 @@ func main(){
 
 	//CRUD
 	//Create data
-	book := book.Book{}
-	book.Title = "Belajar Golang Lanjut"
-	book.Description = "Go Super"
-	book.Price = 100000
-	book.Discount = 50
-	book.Rating = 5
+	// book := book.Book{}
+	// book.Title = "Belajar Golang Lanjut"
+	// book.Description = "Go Super"
+	// book.Price = 100000
+	// book.Discount = 50
+	// book.Rating = 5
 
-	err = db.Create(&book).Error
+	// err = db.Create(&book).Error
+	// if err !=nil {
+	// 	fmt.Println("============");
+	// 	fmt.Println("Error Creating Data");
+	// 	fmt.Println("============");
+	// }
+	
+	var book book.Book
+
+	err = db.Debug().First(&book,1).Error
 	if err !=nil {
 		fmt.Println("============");
-		fmt.Println("Error Creating Data");
+		fmt.Println("Error Finding Data");
 		fmt.Println("============");
 	}
+
+	fmt.Println("Title :", book.Title)
+	fmt.Println("book object %v", book)
 
 	router :=gin.Default()
 
